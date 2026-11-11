@@ -1,5 +1,5 @@
 [project]
-name = "aula-06-o-mesmo-dado-pela-api"
+name = "projeto-wikipedia"
 version = "0.1.0"
 description = "Aula 6 do Projeto 1 do curso G learn: o mesmo dado pela API."
 requires-python = ">=3.12"

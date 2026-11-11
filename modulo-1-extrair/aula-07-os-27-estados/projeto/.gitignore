@@ -3,6 +3,4 @@
 __pycache__/
 .pytest_cache/
 .ruff_cache/
-dados/bronze/
-dados/silver/
-dados/gold/
+dados/

@@ -1,5 +1,5 @@
 [project]
-name = "aula-04-achar-a-tabela-e-ler-uma-linha"
+name = "projeto-wikipedia"
 version = "0.1.0"
 description = "Aula 4 do Projeto 1 do curso G learn: achar a tabela e ler uma linha."
 requires-python = ">=3.12"

@@ -1,5 +1,5 @@
 [project]
-name = "glearn-projeto-wikipedia"
+name = "projeto-wikipedia"
 version = "0.1.0"
 description = "Projeto 1 do curso G learn: extrair dados da Wikipedia."
 requires-python = ">=3.12"

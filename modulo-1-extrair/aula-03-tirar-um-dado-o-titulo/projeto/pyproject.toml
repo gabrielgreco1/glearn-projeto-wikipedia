@@ -1,5 +1,5 @@
 [project]
-name = "aula-03-tirar-um-dado-o-titulo"
+name = "projeto-wikipedia"
 version = "0.1.0"
 description = "Aula 3 do Projeto 1 do curso G learn: tirar o título da página."
 requires-python = ">=3.12"

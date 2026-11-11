@@ -12,7 +12,17 @@ from bs4 import BeautifulSoup
 
 from comum import DADOS, registro, ultimo_bronze
 
-COLUNAS = ["sigla", "estado", "capital", "area_km2", "populacao", "pagina", "descricao", "latitude", "longitude"]
+COLUNAS = [
+    "sigla",
+    "estado",
+    "capital",
+    "area_km2",
+    "populacao",
+    "pagina",
+    "descricao",
+    "latitude",
+    "longitude",
+]
 
 
 def texto(celula) -> str:

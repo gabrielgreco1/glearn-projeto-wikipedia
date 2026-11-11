@@ -11,7 +11,7 @@
 
 - `projeto/src/api.py`: novo.
 - `projeto/src/tabela.py`: igual à aula 5. O `api.py` usa a função `ler_estados` dele.
-- `projeto/testes/`, `pyproject.toml` e o resto: iguais à aula 5.
+- `projeto/testes/` e o `pyproject.toml`: as mesmas bibliotecas da aula 5.
 
 ## Dois caminhos para o mesmo dado
 
@@ -80,24 +80,23 @@ acre = next(estado for estado in estados if estado["sigla"] == "AC")
 
 ## Como rodar
 
-Se o `dados/bronze/lista.html` não está na pasta, copie da aula 2:
+Esta pasta tem o próprio `baixar.py`. Rode ele primeiro, para ter o `dados/bronze/lista.html` nesta pasta:
+
+Na sua pasta do projeto (`projeto-wikipedia/`), rode:
 
 ```bash
-cd modulo-1-extrair/aula-06-o-mesmo-dado-pela-api/projeto
-mkdir -p dados/bronze
-cp ../../aula-02-baixar-a-pagina-com-python/projeto/dados/bronze/lista.html dados/bronze/
 cp .env.example .env   # e troque o contato dentro dele
-```
-
-Depois rode duas vezes, para ver a diferença:
-
-```bash
 uv sync
+uv run python src/baixar.py
 uv run python src/api.py
 uv run python src/api.py
 uv run ruff check .
 uv run pytest
 ```
+
+Para rodar o gabarito deste curso, entre antes em `modulo-1-extrair/aula-06-o-mesmo-dado-pela-api/projeto/` a partir da raiz deste repositório, e use os mesmos comandos.
+
+Rode `api.py` duas vezes para ver a diferença. A primeira pede o resumo à API. A segunda usa o arquivo que ficou em `dados/bronze/`.
 
 ## Saída esperada
 
@@ -125,19 +124,27 @@ O `ruff check .` mostra `All checks passed!`. O pytest mostra `3 passed`.
 
 ## Guarde no Git
 
+Seu repositório é a pasta `projeto-wikipedia/`, criada na aula 1. Este repositório do curso é a referência: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar ao fim daquela aula.
+
+Na sua pasta do projeto, confira o `git status`, adicione só os arquivos desta aula e envie:
+
 ```bash
 git status
-git add modulo-1-extrair/aula-06-o-mesmo-dado-pela-api/README.md modulo-1-extrair/aula-06-o-mesmo-dado-pela-api/projeto/src/api.py
+git add pyproject.toml uv.lock src/api.py
 git commit -m "Aula 6: resumo de um estado pela API, comparado com a tabela"
 git push
 ```
 
-Confira o `git status` antes. O `.env` e os arquivos em `dados/` não devem aparecer.
+Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` não devem aparecer nela.
 
 ## Erros comuns
 
 - `status: 404`: o nome da página mudou. Confira o nome do estado no navegador.
 - `status: 429` ou outro erro: o site está limitando. Espere alguns minutos e não insista.
-- `KeyError` ou `StopIteration` ao buscar o Acre: o `lista.html` não é o certo. Copie de novo da aula 2.
+- `KeyError` ou `StopIteration` ao buscar o Acre: o `lista.html` não é o certo. Apague `dados/bronze/lista.html` e rode `uv run python src/baixar.py` de novo.
+
+Aula anterior: [Aula 5: todas as linhas em CSV](../aula-05-todas-as-linhas-em-csv/README.md)
+
+Próxima aula: [Aula 7: os 27 estados](../aula-07-os-27-estados/README.md)
 
 Aula na plataforma: (link a definir)

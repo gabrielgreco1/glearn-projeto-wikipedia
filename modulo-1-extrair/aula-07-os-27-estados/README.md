@@ -81,8 +81,9 @@ return {**estado, "descricao": resumo.get("description"), "latitude": coordenada
 
 ## Como rodar
 
+Na sua pasta do projeto (`projeto-wikipedia/`), rode:
+
 ```bash
-cd modulo-1-extrair/aula-07-os-27-estados/projeto
 cp .env.example .env     # e troque o contato dentro dele
 uv sync
 uv run python src/coletar.py
@@ -91,16 +92,18 @@ uv run pytest
 uv run ruff check .
 ```
 
+Para rodar o gabarito deste curso, entre antes em `modulo-1-extrair/aula-07-os-27-estados/projeto/` a partir da raiz deste repositório, e use os mesmos comandos.
+
 Na primeira vez, `coletar.py` faz 28 pedidos (a lista e os 27 estados), com uma pausa de 1 segundo entre eles. Leva cerca de 30 segundos.
 
 Para rodar de novo no mesmo dia, sem pedir nada: `uv run python src/coletar.py` e `uv run python src/extrair.py`.
 
 ## Saída esperada
 
-Primeira execução do `coletar.py` (fizemos com a lista já copiada da aula 2, então são 27 pedidos):
+Primeira execução do `coletar.py` (faz 28 pedidos: a lista e os 27 estados):
 
 ```
-... INFO lista.html já está em bronze, não baixo de novo
+... INFO lista baixada: 413130 bytes
 ... INFO resumo AC (1 de 27)
 ... INFO resumo AL (2 de 27)
 ... INFO resumo AP (3 de 27)
@@ -136,16 +139,18 @@ As colunas `latitude` e `longitude` ficam vazias para o Acre e para Alagoas, por
 
 ## Guarde no Git
 
-Esta aula fecha o projeto. Salve os arquivos do projeto e o README:
+Seu repositório é a pasta `projeto-wikipedia/`, criada na aula 1. Este repositório do curso é a referência: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar ao fim daquela aula.
+
+Na sua pasta do projeto, confira o `git status`, adicione só os arquivos desta aula e envie:
 
 ```bash
 git status
-git add modulo-1-extrair/aula-07-os-27-estados/README.md modulo-1-extrair/aula-07-os-27-estados/projeto/README.md modulo-1-extrair/aula-07-os-27-estados/projeto/pyproject.toml modulo-1-extrair/aula-07-os-27-estados/projeto/uv.lock modulo-1-extrair/aula-07-os-27-estados/projeto/.env.example modulo-1-extrair/aula-07-os-27-estados/projeto/.gitignore modulo-1-extrair/aula-07-os-27-estados/projeto/.python-version modulo-1-extrair/aula-07-os-27-estados/projeto/src/comum.py modulo-1-extrair/aula-07-os-27-estados/projeto/src/coletar.py modulo-1-extrair/aula-07-os-27-estados/projeto/src/extrair.py modulo-1-extrair/aula-07-os-27-estados/projeto/testes/test_extrair.py modulo-1-extrair/aula-07-os-27-estados/projeto/testes/amostras/lista-3-estados.html
+git add README.md pyproject.toml uv.lock .env.example .gitignore .python-version src/comum.py src/coletar.py src/extrair.py testes/test_extrair.py testes/amostras/lista-3-estados.html
 git commit -m "Aula 7: os 27 estados, com pausa, origem e testes"
 git push
 ```
 
-Confira o `git status` antes. O `.env` e a pasta `dados/` não entram: o `.env` tem o seu contato e `dados/` tem o que foi coletado.
+Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` não devem aparecer nela.
 
 ## Erros comuns
 
@@ -153,5 +158,9 @@ Confira o `git status` antes. O `.env` e a pasta `dados/` não entram: o `.env` 
 - `Não achei a tabela dos estados. A página mudou?`: a página mudou ou a lista não foi baixada direito. Apague a pasta do dia em `dados/bronze/` e rode de novo.
 - Status diferente de 200 no log: o site recusou. Pare e espere. Não insista.
 - O `coletar.py` no dia seguinte cria outra pasta de bronze e baixa tudo de novo. Isso é o esperado.
+
+Aula anterior: [Aula 6: o mesmo dado pela API](../aula-06-o-mesmo-dado-pela-api/README.md)
+
+Projeto pronto: [final/](../../final/README.md)
 
 Aula na plataforma: (link a definir)

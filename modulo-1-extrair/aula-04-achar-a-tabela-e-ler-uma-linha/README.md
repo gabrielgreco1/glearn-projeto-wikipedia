@@ -48,21 +48,22 @@ for numero_da_celula, celula in enumerate(primeira_linha_de_dados.select("td")):
 
 ## Como rodar
 
-Se o `dados/bronze/lista.html` não está na pasta, copie da aula 2 como na aula 3:
+Esta pasta tem o próprio `baixar.py`. Ele pede a página à Wikipedia e guarda o HTML em `dados/bronze/lista.html`. Rode ele antes das outras etapas desta aula.
+
+Na sua pasta do projeto (`projeto-wikipedia/`), rode:
 
 ```bash
-cd modulo-1-extrair/aula-04-achar-a-tabela-e-ler-uma-linha/projeto
-mkdir -p dados/bronze
-cp ../../aula-02-baixar-a-pagina-com-python/projeto/dados/bronze/lista.html dados/bronze/
-```
-
-Depois rode:
-
-```bash
+cp .env.example .env   # e troque o contato dentro dele
+uv sync
+uv run python src/baixar.py
 uv sync
 uv run ruff check .
 uv run python src/tabela.py
 ```
+
+Para rodar o gabarito deste curso, entre antes em `modulo-1-extrair/aula-04-achar-a-tabela-e-ler-uma-linha/projeto/` a partir da raiz deste repositório, e use os mesmos comandos.
+
+Se o `dados/bronze/lista.html` já existe, o `baixar.py` avisa e não pede a página de novo.
 
 ## Saída esperada
 
@@ -87,19 +88,27 @@ A célula 0 está vazia porque é a bandeira, que é uma imagem. E o `ruff check
 
 ## Guarde no Git
 
+Seu repositório é a pasta `projeto-wikipedia/`, criada na aula 1. Este repositório do curso é a referência: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar ao fim daquela aula.
+
+Na sua pasta do projeto, confira o `git status`, adicione só os arquivos desta aula e envie:
+
 ```bash
 git status
-git add modulo-1-extrair/aula-04-achar-a-tabela-e-ler-uma-linha/README.md modulo-1-extrair/aula-04-achar-a-tabela-e-ler-uma-linha/projeto/src/tabela.py
+git add pyproject.toml uv.lock src/tabela.py
 git commit -m "Aula 4: achar a tabela dos estados e ler uma linha"
 git push
 ```
 
-Confira o `git status` antes. Se o seu `pyproject.toml` e o `uv.lock` não mudaram nesta aula, não os inclua.
+Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` não devem aparecer nela.
 
 ## Erros comuns
 
 - `IndexError: list index out of range`: a tabela tem menos linhas do que o esperado. Confira o arquivo `lista.html`.
 - Aparece "Não achei a tabela": a página mudou. Abra a página no navegador (aula 1) e veja de novo a classe da tabela.
 - Os valores saem com `\xa0`: é normal nesta aula. A aula 5 resolve.
+
+Aula anterior: [Aula 3: tirar um dado, o título](../aula-03-tirar-um-dado-o-titulo/README.md)
+
+Próxima aula: [Aula 5: todas as linhas em CSV](../aula-05-todas-as-linhas-em-csv/README.md)
 
 Aula na plataforma: (link a definir)

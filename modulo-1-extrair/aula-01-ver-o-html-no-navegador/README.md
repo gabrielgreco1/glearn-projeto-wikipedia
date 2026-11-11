@@ -10,11 +10,7 @@ Esta aula não tem Python. Só o navegador.
 
 ## O que muda em relação à aula anterior
 
-Esta é a primeira aula. Ela cria estes arquivos:
-
-- `README.md` (esta página)
-- `projeto/README.md` (diz que o código começa na aula 2)
-- `README.md` e `PADROES.md` na raiz do repositório
+Esta é a primeira aula. Ela cria a sua pasta de trabalho, `projeto-wikipedia/`, com um `README.md` de uma linha. É o seu repositório no Git.
 
 ## O que é HTML
 
@@ -52,28 +48,30 @@ Nas próximas aulas, o Python faz estes mesmos passos sozinho.
 
 ## Guarde no Git
 
-Esta é a primeira vez que você salva o projeto no Git. Você precisa de uma conta no GitHub.
+Seu repositório é uma pasta de trabalho sua, só do seu projeto. Este repositório do curso é a referência: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar ao fim daquela aula.
 
-1. No GitHub, crie um repositório novo e vazio, sem README e sem `.gitignore`. Anote o endereço, no formato `https://github.com/<seu-usuario>/<seu-repositorio>.git`.
-2. No seu computador, entre na pasta do repositório e rode:
+1. Crie uma pasta nova, `projeto-wikipedia/`, e entre nela.
+2. Dentro dela, crie um `README.md` com uma linha: `# Projeto Wikipedia`.
+3. No GitHub, crie um repositório novo e vazio, sem README e sem `.gitignore`. Anote o endereço, no formato `https://github.com/<seu-usuario>/<seu-repositorio>.git`.
+4. Na pasta `projeto-wikipedia/`, rode:
 
 ```bash
 git init -b main
 git status
-git add README.md PADROES.md modulo-1-extrair/aula-01-ver-o-html-no-navegador/README.md modulo-1-extrair/aula-01-ver-o-html-no-navegador/projeto/README.md
+git add README.md
 git commit -m "Aula 1: ver o HTML no navegador"
 git remote add origin https://github.com/<seu-usuario>/<seu-repositorio>.git
 git push -u origin main
 ```
 
-Troque `<seu-usuario>` e `<seu-repositorio>` pelos seus dados. Depois do `git push`, a página do repositório no GitHub mostra os arquivos.
-
-Por que o `.gitignore` deixa de fora o `.env` e a pasta `dados/`: o `.env` tem o seu contato e a pasta `dados/` tem o que foi coletado, e nenhum dos dois vai para o repositório.
+Troque `<seu-usuario>` e `<seu-repositorio>` pelos seus dados. Depois do `git push`, a página do repositório no GitHub mostra o `README.md`.
 
 ## Erros comuns
 
 - A página não abre. Confira o endereço. Ele tem "pt" (português) e "Unidades_federativas_do_Brasil" com sublinhado.
 - O atalho não abre o código-fonte. Clique com o botão direito na página e escolha "Ver código-fonte" (ou "View page source").
 - Não acho "Acre" no código. Use `Ctrl + F` dentro da aba do código-fonte, não na página normal.
+
+Próxima aula: [Aula 2: baixar a página com Python](../aula-02-baixar-a-pagina-com-python/README.md)
 
 Aula na plataforma: (link a definir)

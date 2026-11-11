@@ -81,10 +81,13 @@ DESTINO.write_bytes(resposta.content)  # os bytes como vieram, sem mexer
 
 Antes da primeira vez, copie o modelo de configuração e troque o contato pelo seu:
 
+Na sua pasta do projeto (`projeto-wikipedia/`), rode:
+
 ```bash
-cd modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto
 cp .env.example .env
 ```
+
+Para rodar o gabarito deste curso, entre antes em `modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto/` a partir da raiz deste repositório, e use os mesmos comandos.
 
 Abra o `.env` e troque `seu-contato-aqui` pelo seu e-mail ou pelo endereço do seu repositório.
 
@@ -116,16 +119,18 @@ All checks passed!
 
 ## Guarde no Git
 
-Você já criou o seu repositório na aula 1. Agora salve esta aula. Entre na pasta do repositório e rode:
+Seu repositório é a pasta `projeto-wikipedia/`, criada na aula 1. Este repositório do curso é a referência: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar ao fim daquela aula.
+
+Na sua pasta do projeto, confira o `git status`, adicione só os arquivos desta aula e envie:
 
 ```bash
 git status
-git add modulo-1-extrair/aula-02-baixar-a-pagina-com-python/README.md modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto/pyproject.toml modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto/uv.lock modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto/.python-version modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto/.env.example modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto/.gitignore modulo-1-extrair/aula-02-baixar-a-pagina-com-python/projeto/src/baixar.py
+git add pyproject.toml uv.lock .python-version .env.example .gitignore src/baixar.py
 git commit -m "Aula 2: baixar a página com Python"
 git push
 ```
 
-Confira o `git status` antes do `git add`. O `.env` e a pasta `dados/` não devem aparecer nele.
+Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` não devem aparecer nela.
 
 ## Erros comuns
 
@@ -133,5 +138,9 @@ Confira o `git status` antes do `git add`. O `.env` e a pasta `dados/` não deve
 - `No such file or directory: .env`: o `.env` não existe. Rode `cp .env.example .env`. O programa funciona mesmo sem ele, mas usa um contato genérico.
 - `uv: command not found`: o `uv` não está instalado. Instale e abra um terminal novo.
 - Erro de conexão: confira a internet e rode de novo.
+
+Aula anterior: [Aula 1: ver o HTML no navegador](../aula-01-ver-o-html-no-navegador/README.md)
+
+Próxima aula: [Aula 3: tirar um dado, o título](../aula-03-tirar-um-dado-o-titulo/README.md)
 
 Aula na plataforma: (link a definir)

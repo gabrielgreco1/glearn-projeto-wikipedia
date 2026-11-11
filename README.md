@@ -8,8 +8,9 @@ Você não precisa saber programar para começar. A primeira aula é só no nave
 
 1. Faça as aulas em ordem, da aula 1 à 7.
 2. Em cada aula, leia o `README.md` da pasta e siga os passos.
-3. Um commit por aula, com push ao fim de cada aula. Os comandos estão no fim de cada README.
-4. A pasta `projeto/` de cada aula tem o projeto inteiro como ele deve estar no fim daquela aula. Você pode copiar para o seu computador e rodar.
+3. Você trabalha na sua pasta `projeto-wikipedia/`, criada na aula 1. Ela é o seu repositório no Git.
+4. Um commit e um push por aula. Os comandos estão no fim de cada README.
+5. Este repositório é a referência: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar ao fim daquela aula.
 
 ## Aulas
 
@@ -23,12 +24,18 @@ Você não precisa saber programar para começar. A primeira aula é só no nave
 | 6 | `modulo-1-extrair/aula-06-o-mesmo-dado-pela-api/` | Pega o resumo de um estado pela API e compara com a tabela |
 | 7 | `modulo-1-extrair/aula-07-os-27-estados/` | Junta tudo: 27 estados, pausa, origem e testes |
 
+O projeto pronto, com as mesmas etapas da aula 7, fica em `final/`.
+
 ## Para ler antes de começar
 
-- `PADROES.md`: as regras de código e de Git usadas em todas as aulas.
+- [`PADROES.md`](PADROES.md): as regras de código e de Git usadas em todas as aulas.
 
 ## Requisitos
 
-- Um navegador (Chrome, Edge ou Firefox).
-- Python 3.12 e `uv` a partir da aula 2. O `uv` instala o Python e as bibliotecas para você.
-- Uma conta no GitHub, para salvar o seu trabalho.
+Confira cada item no terminal antes da aula 2.
+
+- Um navegador (Chrome, Edge ou Firefox), para a aula 1.
+- Git, para salvar o seu trabalho a partir da aula 1. Confira com `git --version`. Deve aparecer `git version` seguido de um número.
+- Python 3.12, a partir da aula 2. Confira com `python3.12 --version`. Se não aparecer, não precisa instalar à mão: o `uv` instala o Python 3.12 quando você roda `uv sync`.
+- `uv`, a partir da aula 2. Confira com `uv --version`. Se não aparecer, instale pelo site oficial do `uv`.
+- Uma conta no GitHub, para guardar o seu repositório.

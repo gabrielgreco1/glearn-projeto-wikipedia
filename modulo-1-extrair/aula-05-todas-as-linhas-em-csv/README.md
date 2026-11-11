@@ -73,22 +73,23 @@ def test_numero_com_espaco_e_virgula():
 
 ## Como rodar
 
-Se o `dados/bronze/lista.html` não está na pasta, copie da aula 2:
+Esta pasta tem o próprio `baixar.py`. Ele pede a página à Wikipedia e guarda o HTML em `dados/bronze/lista.html`. Rode ele antes das outras etapas desta aula.
+
+Na sua pasta do projeto (`projeto-wikipedia/`), rode:
 
 ```bash
-cd modulo-1-extrair/aula-05-todas-as-linhas-em-csv/projeto
-mkdir -p dados/bronze
-cp ../../aula-02-baixar-a-pagina-com-python/projeto/dados/bronze/lista.html dados/bronze/
-```
-
-Depois rode:
-
-```bash
+cp .env.example .env   # e troque o contato dentro dele
+uv sync
+uv run python src/baixar.py
 uv sync
 uv run ruff check .
 uv run python src/tabela.py
 uv run pytest
 ```
+
+Para rodar o gabarito deste curso, entre antes em `modulo-1-extrair/aula-05-todas-as-linhas-em-csv/projeto/` a partir da raiz deste repositório, e use os mesmos comandos.
+
+Se o `dados/bronze/lista.html` já existe, o `baixar.py` avisa e não pede a página de novo.
 
 ## Saída esperada
 
@@ -106,7 +107,7 @@ O `pytest` mostra:
 
 ```
 testes/test_tabela.py ...                                                [100%]
-3 passed in 0.43s
+3 passed in 0.13s
 ```
 
 As primeiras linhas do CSV:
@@ -119,19 +120,27 @@ AL,Alagoas,Maceió,27767.7,3127683,Alagoas
 
 ## Guarde no Git
 
+Seu repositório é a pasta `projeto-wikipedia/`, criada na aula 1. Este repositório do curso é a referência: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar ao fim daquela aula.
+
+Na sua pasta do projeto, confira o `git status`, adicione só os arquivos desta aula e envie:
+
 ```bash
 git status
-git add modulo-1-extrair/aula-05-todas-as-linhas-em-csv/README.md modulo-1-extrair/aula-05-todas-as-linhas-em-csv/projeto/pyproject.toml modulo-1-extrair/aula-05-todas-as-linhas-em-csv/projeto/uv.lock modulo-1-extrair/aula-05-todas-as-linhas-em-csv/projeto/src/tabela.py modulo-1-extrair/aula-05-todas-as-linhas-em-csv/projeto/testes/test_tabela.py modulo-1-extrair/aula-05-todas-as-linhas-em-csv/projeto/testes/amostras/lista-3-estados.html
+git add pyproject.toml uv.lock src/tabela.py testes/test_tabela.py testes/amostras/lista-3-estados.html
 git commit -m "Aula 5: todas as linhas da tabela em CSV, com testes"
 git push
 ```
 
-Confira o `git status` antes do `git add`. O `dados/` não entra, por causa do `.gitignore`.
+Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` não devem aparecer nela.
 
 ## Erros comuns
 
 - `AssertionError` no pytest: a função `numero` ou a leitura mudou. Compare o seu `tabela.py` com o desta aula.
 - `ModuleNotFoundError: tabela`: rode o pytest pelo `uv run pytest` dentro da pasta `projeto/`.
-- O CSV tem menos de 27 linhas: confira o `lista.html` copiado.
+- O CSV tem menos de 27 linhas: apague `dados/bronze/lista.html`, rode `uv run python src/baixar.py` e tente de novo.
+
+Aula anterior: [Aula 4: achar a tabela e ler uma linha](../aula-04-achar-a-tabela-e-ler-uma-linha/README.md)
+
+Próxima aula: [Aula 6: o mesmo dado pela API](../aula-06-o-mesmo-dado-pela-api/README.md)
 
 Aula na plataforma: (link a definir)

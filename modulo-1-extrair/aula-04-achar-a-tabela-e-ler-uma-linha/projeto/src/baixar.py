@@ -19,6 +19,9 @@ USER_AGENT = os.getenv("WIKI_USER_AGENT", "projeto-de-estudo/0.1 (preencha o .en
 
 
 def main():
+    if DESTINO.exists():
+        print("lista.html já está em dados/bronze, não baixo de novo")
+        return
     resposta = requests.get(URL, headers={"User-Agent": USER_AGENT}, timeout=30)
     print("status:", resposta.status_code)
     if resposta.status_code != 200:

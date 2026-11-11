@@ -34,7 +34,10 @@ Estas regras valem para todo código do curso. Cada aula segue todas.
 
 ## Git
 
+- O aluno trabalha na pasta dele, `projeto-wikipedia/`, criada na aula 1. Ela é o repositório do aluno.
+- Este repositório do curso é a referência. A pasta `projeto/` de cada aula mostra como a pasta do aluno deve estar ao fim daquela aula.
 - Um commit por aula, com push ao fim de cada aula.
+- Os caminhos do `git add` são relativos à pasta do aluno, e listam só os arquivos novos ou alterados daquela aula.
 - Antes de cada `git add`, rode `git status` e confira a lista.
 - Adicione os arquivos pelo nome. Não use `git add .` sem olhar antes.
 - Mensagem do commit: "Aula N: título da aula".

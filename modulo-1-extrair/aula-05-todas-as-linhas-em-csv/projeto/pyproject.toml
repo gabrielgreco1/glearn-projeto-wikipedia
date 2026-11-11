@@ -1,5 +1,5 @@
 [project]
-name = "aula-05-todas-as-linhas-em-csv"
+name = "projeto-wikipedia"
 version = "0.1.0"
 description = "Aula 5 do Projeto 1 do curso G learn: todas as linhas em CSV."
 requires-python = ">=3.12"

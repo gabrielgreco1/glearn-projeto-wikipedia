@@ -1,4 +1,4 @@
-"""Peças usadas por todas as etapas: configuração, registro, pedido ao site e gravação em bronze."""
+"""Peças usadas por todas as etapas: configuração, pedido ao site e gravação em bronze."""
 
 import hashlib
 import json
