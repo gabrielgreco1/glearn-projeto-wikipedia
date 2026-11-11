@@ -141,10 +141,10 @@ Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` 
 
 - `status: 404`: o nome da página mudou. Confira o nome do estado no navegador.
 - `status: 429` ou outro erro: o site está limitando. Espere alguns minutos e não insista.
-- `KeyError` ou `StopIteration` ao buscar o Acre: o `lista.html` não é o certo. Apague `dados/bronze/lista.html` e rode `uv run python src/baixar.py` de novo.
+- `ValueError` ou `StopIteration` ao buscar o Acre: o `lista.html` não é o certo. Apague `dados/bronze/lista.html` e rode `uv run python src/baixar.py` de novo.
 
 Aula anterior: [Aula 5: todas as linhas em CSV](../aula-05-todas-as-linhas-em-csv/README.md)
 
 Próxima aula: [Aula 7: os 27 estados](../aula-07-os-27-estados/README.md)
 
-Aula na plataforma: (link a definir)
+Aula na plataforma: https://learn.gabrielgreco.com/trilha/pw-06-o-mesmo-dado-pela-api-oficial

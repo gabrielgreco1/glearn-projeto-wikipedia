@@ -135,7 +135,7 @@ Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` 
 ## Erros comuns
 
 - `status: 403` ou outro número diferente de 200: o site recusou o pedido. Confira o `.env` (o contato precisa estar preenchido). Se continuar, pare e não insista.
-- `No such file or directory: .env`: o `.env` não existe. Rode `cp .env.example .env`. O programa funciona mesmo sem ele, mas usa um contato genérico.
+- Esqueci de criar o `.env`: o programa roda mesmo assim, mas se identifica com um contato genérico (`projeto-de-estudo/0.1 (preencha o .env)`). Rode `cp .env.example .env`, troque o contato pelo seu e rode de novo.
 - `uv: command not found`: o `uv` não está instalado. Instale e abra um terminal novo.
 - Erro de conexão: confira a internet e rode de novo.
 
@@ -143,4 +143,4 @@ Aula anterior: [Aula 1: ver o HTML no navegador](../aula-01-ver-o-html-no-navega
 
 Próxima aula: [Aula 3: tirar um dado, o título](../aula-03-tirar-um-dado-o-titulo/README.md)
 
-Aula na plataforma: (link a definir)
+Aula na plataforma: https://learn.gabrielgreco.com/trilha/pw-02-baixar-a-pagina-com-python

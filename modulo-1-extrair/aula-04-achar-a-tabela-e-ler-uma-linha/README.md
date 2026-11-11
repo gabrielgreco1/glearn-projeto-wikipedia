@@ -111,4 +111,4 @@ Aula anterior: [Aula 3: tirar um dado, o título](../aula-03-tirar-um-dado-o-tit
 
 Próxima aula: [Aula 5: todas as linhas em CSV](../aula-05-todas-as-linhas-em-csv/README.md)
 
-Aula na plataforma: (link a definir)
+Aula na plataforma: https://learn.gabrielgreco.com/trilha/pw-04-achar-a-tabela-e-ler-uma

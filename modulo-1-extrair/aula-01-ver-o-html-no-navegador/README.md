@@ -74,4 +74,4 @@ Troque `<seu-usuario>` e `<seu-repositorio>` pelos seus dados. Depois do `git pu
 
 Próxima aula: [Aula 2: baixar a página com Python](../aula-02-baixar-a-pagina-com-python/README.md)
 
-Aula na plataforma: (link a definir)
+Aula na plataforma: https://learn.gabrielgreco.com/trilha/pw-01-ver-o-html-no-navegador

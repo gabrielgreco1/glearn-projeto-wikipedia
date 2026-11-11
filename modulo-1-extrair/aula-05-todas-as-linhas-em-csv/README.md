@@ -143,4 +143,4 @@ Aula anterior: [Aula 4: achar a tabela e ler uma linha](../aula-04-achar-a-tabel
 
 Próxima aula: [Aula 6: o mesmo dado pela API](../aula-06-o-mesmo-dado-pela-api/README.md)
 
-Aula na plataforma: (link a definir)
+Aula na plataforma: https://learn.gabrielgreco.com/trilha/pw-05-todas-as-linhas-em-csv

@@ -15,7 +15,7 @@
 - `testes/`: os testes da leitura da tabela.
 - `.env.example`: agora tem a pausa (`WIKI_PAUSA`) além do contato.
 - `pyproject.toml`: as mesmas bibliotecas da aula 5, com a versão travada.
-- O `src/baixar.py` e o `src/tabela.py` das aulas anteriores não fazem parte deste projeto. Você troca pelo código desta aula.
+- Os arquivos das aulas anteriores saem do projeto: `src/baixar.py`, `src/titulo.py`, `src/tabela.py`, `src/api.py` e `testes/test_tabela.py`. O código desta aula faz o trabalho deles. Você apaga esses cinco com `git rm`, no passo "Guarde no Git".
 
 ## Conceitos desta aula
 
@@ -144,11 +144,14 @@ Seu repositório é a pasta `projeto-wikipedia/`, criada na aula 1. Este reposit
 Na sua pasta do projeto, confira o `git status`, adicione só os arquivos desta aula e envie:
 
 ```bash
+git rm src/baixar.py src/titulo.py src/tabela.py src/api.py testes/test_tabela.py
 git status
 git add README.md pyproject.toml uv.lock .env.example .gitignore .python-version src/comum.py src/coletar.py src/extrair.py testes/test_extrair.py testes/amostras/lista-3-estados.html
 git commit -m "Aula 7: os 27 estados, com pausa, origem e testes"
 git push
 ```
+
+O `git rm` apaga os cinco arquivos das aulas anteriores e já registra a remoção para o commit. Se algum deles não existir na sua pasta, tire o nome dele do comando.
 
 Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` não devem aparecer nela.
 
@@ -156,11 +159,11 @@ Confira a lista do `git status` antes do `git add`. O `.env` e a pasta `dados/` 
 
 - `Não há bronze. Rode antes: uv run python src/coletar.py`: você rodou o `extrair.py` antes do `coletar.py`. Rode o `coletar.py` primeiro.
 - `Não achei a tabela dos estados. A página mudou?`: a página mudou ou a lista não foi baixada direito. Apague a pasta do dia em `dados/bronze/` e rode de novo.
-- Status diferente de 200 no log: o site recusou. Pare e espere. Não insista.
+- O `coletar.py` para com um erro que cita o status (por exemplo `429` ou `403`): o site recusou um pedido, e o `raise_for_status` interrompeu o programa. Pare e espere. Não insista. Ao rodar de novo, o programa continua de onde parou.
 - O `coletar.py` no dia seguinte cria outra pasta de bronze e baixa tudo de novo. Isso é o esperado.
 
 Aula anterior: [Aula 6: o mesmo dado pela API](../aula-06-o-mesmo-dado-pela-api/README.md)
 
 Projeto pronto: [final/](../../final/README.md)
 
-Aula na plataforma: (link a definir)
+Aula na plataforma: https://learn.gabrielgreco.com/trilha/pw-07-os-27-estados-com-pausa-e

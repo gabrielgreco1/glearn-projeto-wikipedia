@@ -109,4 +109,4 @@ Aula anterior: [Aula 2: baixar a página com Python](../aula-02-baixar-a-pagina-
 
 Próxima aula: [Aula 4: achar a tabela e ler uma linha](../aula-04-achar-a-tabela-e-ler-uma-linha/README.md)
 
-Aula na plataforma: (link a definir)
+Aula na plataforma: https://learn.gabrielgreco.com/trilha/pw-03-tirar-um-dado-o-titulo
