@@ -1,6 +1,7 @@
+# O contato de verdade fica só no seu computador.
 .env
+# As páginas baixadas: o programa baixa de novo quando precisar.
+dados/
+# O ambiente que o uv cria e os restos do Python.
 .venv/
 __pycache__/
-.pytest_cache/
-.ruff_cache/
-dados/
