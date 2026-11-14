@@ -18,6 +18,16 @@ Você faz o projeto na SUA pasta, `projeto-wikipedia/`, no SEU repositório, seg
 | 6 | [Quando o site oferece uma API](modulo-1-extrair/aula-06-quando-o-site-oferece-uma-api) | `uv run python resumos.py` e `uv run python juntar.py` |
 | 7 | [Fechar o projeto: rodar do zero e documentar](modulo-1-extrair/aula-07-fechar-o-projeto) | `uv run python rodar.py` e `uv run pytest` |
 
+## Etapa 2: transformar
+
+A segunda etapa parte do CSV final da extração. As pastas ficam em `modulo-2-transformar/`.
+
+| Aula | Pasta | O que roda |
+|---|---|---|
+| 1 | [Medir o que você coletou antes de mexer](modulo-2-transformar/aula-01-medir-o-que-voce-coletou) | `uv run python perfil.py` e `uv run pytest` |
+
+Em 14 de novembro de 2026, com pandas 3.1.1: a pasta da aula 1 foi rodada numa cópia limpa, depois de `uv run python rodar.py`. O `perfil.py` mostrou 27 linhas, 13 estados sem coordenadas e a densidade diferente da conta nos 27 estados. Os 3 testes passam.
+
 ## O que foi rodado
 
 Em 12 de novembro de 2026, com Python 3.13.5, uv 0.10.11, httpx 0.28.1, beautifulsoup4 4.15.0, python-dotenv 1.2.4 e pytest 9.2.0:
