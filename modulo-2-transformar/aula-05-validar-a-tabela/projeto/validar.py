@@ -9,30 +9,34 @@ from baixar import registro
 
 REGIOES = ["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"]
 
-ESQUEMA = pa.DataFrameSchema(
-    {
-        "sigla": pa.Column(str, pa.Check.str_matches(r"^[A-Z]{2}$"), unique=True),
-        "regiao": pa.Column(str, pa.Check.isin(REGIOES)),
-        "municipios": pa.Column(float, pa.Check.gt(0), nullable=True, coerce=True),  # vazio no DF; coerce: lê inteiro como decimal
-        "area_km2": pa.Column(float, pa.Check.gt(0)),
-        "populacao": pa.Column(int, pa.Check.gt(0)),
-        "idh": pa.Column(float, pa.Check.in_range(0, 1)),
-        "ano_pib": pa.Column(int, pa.Check.in_range(2015, 2026)),
-        "pib_reais": pa.Column(float, pa.Check.gt(0), nullable=True, coerce=True),  # vazio quando foi para os rejeitados
-    },
-    checks=pa.Check(lambda tabela: len(tabela) == 27, error="a tabela precisa ter os 27 estados"),
-)
+
+class Estados(pa.DataFrameModel):
+    """Uma linha por estado. Cada coluna é uma regra escrita; o pandera confere todas."""
+
+    sigla: str = pa.Field(str_matches=r"^[A-Z]{2}$", unique=True)
+    regiao: str = pa.Field(isin=REGIOES)
+    municipios: float = pa.Field(gt=0, nullable=True, coerce=True)  # vazio no DF; coerce: lê inteiro como decimal
+    area_km2: float = pa.Field(gt=0)
+    populacao: int = pa.Field(gt=0)
+    idh: float = pa.Field(ge=0, le=1)
+    ano_pib: int = pa.Field(ge=2015, le=2026)
+    pib_reais: float = pa.Field(gt=0, nullable=True, coerce=True)  # vazio quando foi para os rejeitados
+
+    @pa.dataframe_check
+    def tem_os_27_estados(cls, tabela):
+        return len(tabela) == 27
 
 
 def validar(caminho):
     """Lê o CSV e confere todas as regras de uma vez. Devolve a tabela, ou para com a lista do que falhou."""
     tabela = pd.read_csv(caminho)
-    return ESQUEMA.validate(tabela, lazy=True)
+    return Estados.validate(tabela, lazy=True)
 
 
 def main():
     tabela = validar(Path("dados/pib.csv"))
-    registro.info("dados/pib.csv passou nas regras: %s linhas, %s colunas conferidas", len(tabela), len(ESQUEMA.columns))
+    colunas = len(Estados.to_schema().columns)
+    registro.info("dados/pib.csv passou nas regras: %s linhas, %s colunas conferidas", len(tabela), colunas)
     registro.info("PIB vazio em %s estados, como a regra permite", int(tabela["pib_reais"].isna().sum()))
 
 

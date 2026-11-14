@@ -1,12 +1,12 @@
 # Projeto Wikipedia (G learn)
 
-Repositório de referência do Projeto 1 do curso G learn: um programa em Python que monta um CSV com os 27 estados do Brasil, a partir da Wikipedia em português. O projeto é construído em sete aulas, e cada aula tem uma pasta aqui.
+Repositório de referência do Projeto 1 do curso G learn: um programa em Python que monta um CSV com os 27 estados do Brasil, a partir da Wikipedia em português. O projeto é construído em duas etapas de sete aulas cada, extrair e transformar, e cada aula tem uma pasta aqui.
 
 ## Como usar
 
 Você faz o projeto na SUA pasta, `projeto-wikipedia/`, no SEU repositório, seguindo as aulas na plataforma. Este repositório serve para conferir: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar no fim daquela aula. A pasta `final/` é igual à da aula 7 da transformação.
 
-## As sete aulas
+## Etapa 1: extrair
 
 | Aula | Pasta | O que roda |
 |---|---|---|
@@ -24,14 +24,6 @@ A segunda etapa parte do CSV final da extração. As pastas ficam em `modulo-2-t
 
 | Aula | Pasta | O que roda |
 |---|---|---|
-| 1 | [Medir o que você coletou antes de mexer](modulo-2-transformar/aula-01-medir-o-que-voce-coletou) | `uv run python perfil.py` e `uv run pytest` |
-
-Em 14 de novembro de 2026, com pandas 3.1.1: a pasta da aula 1 foi rodada numa cópia limpa, depois de `uv run python rodar.py`. O `perfil.py` mostrou 27 linhas, 13 estados sem coordenadas e a densidade diferente da conta nos 27 estados. Os 3 testes passam.
-
-## A etapa de transformação
-
-| Aula | Pasta | O que roda |
-|---|---|---|
 | 1 | [Medir o que você coletou](modulo-2-transformar/aula-01-medir-o-que-voce-coletou) | `uv run python perfil.py` |
 | 2 | [Ler a ficha de cada estado](modulo-2-transformar/aula-02-ler-a-ficha-de-cada-estado) | `uv run python ficha.py` |
 | 3 | [Do texto ao número](modulo-2-transformar/aula-03-do-texto-ao-numero) | `uv run python numeros.py` |
@@ -40,9 +32,9 @@ Em 14 de novembro de 2026, com pandas 3.1.1: a pasta da aula 1 foi rodada numa c
 | 6 | [Camadas e origem](modulo-2-transformar/aula-06-camadas-e-origem) | `uv run python camadas.py` |
 | 7 | [Perguntar em SQL e fechar](modulo-2-transformar/aula-07-perguntar-em-sql-e-fechar) | `uv run python transformar.py` |
 
-Cada programa lê o que o anterior gravou em `dados/`. O README de cada pasta diz a ordem dos comandos. A pasta `final/` é igual à da aula 7 da transformação.
+Cada programa lê o que o anterior gravou em `dados/`, então numa pasta limpa os comandos rodam na ordem das aulas: `rodar.py`, `ficha.py`, `numeros.py`, `pib.py`, `validar.py`, `camadas.py` e `consultar.py` (ou só `transformar.py`, na aula 7). A pasta `final/` é igual à da aula 7 da transformação.
 
-Em 14 de novembro de 2026, cada pasta da transformação foi copiada para uma pasta limpa e rodada do zero: `rodar.py` (55 pedidos) e depois os comandos da aula. Os testes passam em todas: 3, 5, 11, 17, 20, 21 e 21.
+Em 14 de novembro de 2026, cada pasta da transformação foi copiada para uma pasta limpa e rodada do zero: `rodar.py` (55 pedidos) e depois os comandos da aula. Os testes passam em todas: 3, 5, 11, 17, 20, 21 e 21. Em 14 de novembro de 2026, à tarde, a validação da aula 5 passou a usar a forma de classe do pandera (`DataFrameModel`), a mesma da aula T02-01 do curso; as pastas 5, 6, 7 e `final/` foram rodadas de novo, com os mesmos números.
 
 ## O que foi rodado
 
