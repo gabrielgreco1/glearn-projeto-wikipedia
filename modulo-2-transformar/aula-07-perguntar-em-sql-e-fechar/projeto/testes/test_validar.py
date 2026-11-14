@@ -6,7 +6,7 @@ import pandas as pd
 import pandera.errors
 import pytest
 
-from validar import ESQUEMA
+from validar import Estados
 
 AMOSTRA = Path(__file__).parent / "amostra_pib.csv"
 
@@ -20,19 +20,19 @@ def tabela_de_27():
 
 
 def test_tabela_certa_passa():
-    ESQUEMA.validate(tabela_de_27(), lazy=True)
+    Estados.validate(tabela_de_27(), lazy=True)
 
 
 def test_idh_maior_que_um_falha_com_o_nome_da_regra():
     tabela = tabela_de_27()
     tabela.loc[0, "idh"] = 7.54  # a vírgula do 0,754 lida no lugar errado
     with pytest.raises(pandera.errors.SchemaErrors) as erro:
-        ESQUEMA.validate(tabela, lazy=True)
-    assert "in_range" in str(erro.value)
+        Estados.validate(tabela, lazy=True)
+    assert "less_than_or_equal_to(1)" in str(erro.value)
 
 
 def test_regiao_escrita_errado_falha():
     tabela = tabela_de_27()
     tabela.loc[0, "regiao"] = "Centro Oeste"
     with pytest.raises(pandera.errors.SchemaErrors):
-        ESQUEMA.validate(tabela, lazy=True)
+        Estados.validate(tabela, lazy=True)
