@@ -4,7 +4,7 @@ Repositório de referência do Projeto 1 do curso G learn: um programa em Python
 
 ## Como usar
 
-Você faz o projeto na SUA pasta, `projeto-wikipedia/`, no SEU repositório, seguindo as aulas na plataforma. Este repositório serve para conferir: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar no fim daquela aula. A pasta `final/` é igual à da aula 7.
+Você faz o projeto na SUA pasta, `projeto-wikipedia/`, no SEU repositório, seguindo as aulas na plataforma. Este repositório serve para conferir: a pasta `projeto/` de cada aula mostra como a sua pasta deve estar no fim daquela aula. A pasta `final/` é igual à da aula 7 da transformação.
 
 ## As sete aulas
 
@@ -27,6 +27,22 @@ A segunda etapa parte do CSV final da extração. As pastas ficam em `modulo-2-t
 | 1 | [Medir o que você coletou antes de mexer](modulo-2-transformar/aula-01-medir-o-que-voce-coletou) | `uv run python perfil.py` e `uv run pytest` |
 
 Em 14 de novembro de 2026, com pandas 3.1.1: a pasta da aula 1 foi rodada numa cópia limpa, depois de `uv run python rodar.py`. O `perfil.py` mostrou 27 linhas, 13 estados sem coordenadas e a densidade diferente da conta nos 27 estados. Os 3 testes passam.
+
+## A etapa de transformação
+
+| Aula | Pasta | O que roda |
+|---|---|---|
+| 1 | [Medir o que você coletou](modulo-2-transformar/aula-01-medir-o-que-voce-coletou) | `uv run python perfil.py` |
+| 2 | [Ler a ficha de cada estado](modulo-2-transformar/aula-02-ler-a-ficha-de-cada-estado) | `uv run python ficha.py` |
+| 3 | [Do texto ao número](modulo-2-transformar/aula-03-do-texto-ao-numero) | `uv run python numeros.py` |
+| 4 | [O PIB em seis formatos](modulo-2-transformar/aula-04-o-pib-em-seis-formatos) | `uv run python pib.py` |
+| 5 | [Validar a tabela](modulo-2-transformar/aula-05-validar-a-tabela) | `uv run python validar.py` |
+| 6 | [Camadas e origem](modulo-2-transformar/aula-06-camadas-e-origem) | `uv run python camadas.py` |
+| 7 | [Perguntar em SQL e fechar](modulo-2-transformar/aula-07-perguntar-em-sql-e-fechar) | `uv run python transformar.py` |
+
+Cada programa lê o que o anterior gravou em `dados/`. O README de cada pasta diz a ordem dos comandos. A pasta `final/` é igual à da aula 7 da transformação.
+
+Em 14 de novembro de 2026, cada pasta da transformação foi copiada para uma pasta limpa e rodada do zero: `rodar.py` (55 pedidos) e depois os comandos da aula. Os testes passam em todas: 3, 5, 11, 17, 20, 21 e 21.
 
 ## O que foi rodado
 
