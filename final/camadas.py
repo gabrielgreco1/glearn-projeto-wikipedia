@@ -11,7 +11,6 @@ import pandas as pd
 from baixar import registro
 from validar import validar
 
-BRONZE = [Path("dados/lista.html"), *sorted(Path("dados/estados").glob("*.html")), *sorted(Path("dados/resumos").glob("*.json"))]
 SILVER = Path("dados/silver/estados.parquet")
 
 
@@ -20,10 +19,15 @@ def impressao(arquivo):
     return hashlib.sha256(arquivo.read_bytes()).hexdigest()
 
 
+def arquivos_do_bronze():
+    """Os arquivos do bronze, listados na hora em que a função roda, e não quando o módulo é importado."""
+    return [Path("dados/lista.html"), *sorted(Path("dados/estados").glob("*.html")), *sorted(Path("dados/resumos").glob("*.json"))]
+
+
 def inventario():
     """Uma linha por arquivo do bronze: caminho, tamanho e impressão. É o que permite provar que o bronze não mudou."""
     return pd.DataFrame([
-        {"arquivo": str(arquivo), "bytes": arquivo.stat().st_size, "sha256": impressao(arquivo)} for arquivo in BRONZE
+        {"arquivo": str(arquivo), "bytes": arquivo.stat().st_size, "sha256": impressao(arquivo)} for arquivo in arquivos_do_bronze()
     ])
 
 
