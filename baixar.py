@@ -37,7 +37,9 @@ def baixar(url, destino):
     if resposta.status_code != 200:
         raise RuntimeError(f"{url} respondeu {resposta.status_code}")
     destino.parent.mkdir(parents=True, exist_ok=True)
-    destino.write_bytes(resposta.content)
+    parcial = destino.with_name(destino.name + ".parcial")
+    parcial.write_bytes(resposta.content)
+    parcial.replace(destino)  # o arquivo aparece inteiro, de uma vez: um pela metade nunca vira "já tenho"
     registro.info("baixei %s: %s bytes em %s", url, len(resposta.content), destino)
     return destino
 

@@ -1,13 +1,14 @@
-"""O projeto Wikipedia como um flow do Prefect: uma task para cada etapa, na ordem. As que pedem à Wikipedia são
-tentadas de novo quando falham: o que já está em disco não é pedido outra vez. Se a execução termina mal, fica um
-aviso em avisos.log."""
+"""O projeto Wikipedia como um flow do Prefect: uma task para cada etapa, na ordem, sobre a coleta do dia. As que
+pedem à Wikipedia são tentadas de novo quando falham: o que já está em disco não é pedido outra vez. Se a execução
+termina mal, fica um aviso em avisos.log."""
 
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 from prefect import flow, task
 
 import carregar as carga
+import coleta
 import conferir
 import juntar
 import paginas
@@ -15,6 +16,11 @@ import resumos
 import transformar as transformacao
 from baixar import URL_LISTA, baixar
 from ler import gravar_csv, ler_estados
+
+
+@task
+def preparar_coleta(dia):
+    return coleta.preparar(dia)
 
 
 @task(retries=3, retry_delay_seconds=10, timeout_seconds=60)
@@ -52,13 +58,16 @@ def avisar(flow, flow_run, state):
 
 @flow(log_prints=True, on_failure=[avisar], on_crashed=[avisar])
 def projeto_wikipedia():
+    dia = date.today().isoformat()
+    preparar_coleta(dia)
     baixar_lista()
     tabela_em_csv()
     baixar_paginas()
     baixar_resumos()
     juntar_e_conferir()
     transformar()
-    carregar()
+    impressao = carregar()
+    print(f"coleta de {dia} no banco, impressão digital {impressao}")
 
 
 if __name__ == "__main__":

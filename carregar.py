@@ -90,6 +90,17 @@ def trocar_regioes(conexao, tabela):
             copia.write_row(linha)
 
 
+def impressao_digital(conexao):
+    """A impressão digital do que o banco publica: o sha256 dos estados (sigla e hash do conteúdo) e das regiões, em
+    ordem. Mesmo resultado, mesma impressão, com ou sem queda no meio do caminho."""
+    resumo = hashlib.sha256()
+    for consulta in ["SELECT sigla, hash_conteudo FROM estados ORDER BY sigla",
+                     f"SELECT {', '.join(COLUNAS_GOLD)} FROM regioes ORDER BY regiao"]:
+        for linha in conexao.execute(consulta).fetchall():
+            resumo.update(repr(linha).encode("utf-8"))
+    return resumo.hexdigest()[:16]
+
+
 def main():
     tabela = com_hash(ler_silver())
     regioes = ler_gold()
@@ -100,14 +111,17 @@ def main():
         banco = conexao.execute("SELECT count(*), sum(populacao)::bigint FROM estados").fetchone()
         conferir(silver, banco)
         trocar_regioes(conexao, regioes)
+        impressao = impressao_digital(conexao)
         conexao.execute(
-            "INSERT INTO cargas (tentados, inseridos, atualizados, iguais, populacao, revisao_ate)"
-            " VALUES (%s, %s, %s, %s, %s, %s)",
-            [len(tabela), inseridos, atualizados, iguais, silver[1], tabela["revisao_em"].max()],
+            "INSERT INTO cargas (tentados, inseridos, atualizados, iguais, populacao, revisao_ate, impressao)"
+            " VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            [len(tabela), inseridos, atualizados, iguais, silver[1], tabela["revisao_em"].max(), impressao],
         )
     registro.info("estados: %s linhas da silver; novas %s, atualizadas %s, iguais %s", len(tabela), inseridos, atualizados, iguais)
     registro.info("conferido: %s linhas e %s habitantes, na silver e no banco", *silver)
     registro.info("regioes: %s linhas, trocadas inteiras", len(regioes))
+    registro.info("impressão digital do banco: %s", impressao)
+    return impressao
 
 
 if __name__ == "__main__":
