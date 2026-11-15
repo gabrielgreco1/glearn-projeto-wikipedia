@@ -29,6 +29,15 @@
 - Toda carga é uma transação: entra inteira, conferida contra a silver, ou não entra.
 - Rodar a carga duas vezes não muda o banco: upsert pela chave, com o hash só dos valores do estado.
 
+## Orquestração
+
+- O orquestrador é o Prefect, que roda na sua máquina: o servidor (`uv run prefect server start`), num terminal só dele, guarda o histórico e mostra o painel em http://127.0.0.1:4200.
+- O `fluxo.py` só diz a ordem, as novas tentativas, o horário e o aviso. O trabalho continua nos arquivos de cada etapa, que rodam e são testados sem o Prefect.
+- Erro que tentar de novo pode resolver (a rede) segue adiante como erro, para o Prefect tentar de novo. `SystemExit` fica para o que tentar de novo não resolve: falta configuração ou o banco está desligado.
+- Uma execução que termina mal deixa uma linha em `avisos.log`; o `runbook.md` diz o que fazer.
+- Nada é publicado sem passar pela auditoria, e cada carga grava a impressão digital do banco.
+- Os testes rodam no GitHub a cada push, sem o `.env`, sem o banco e sem `dados/`.
+
 ## Educação com o site da Wikipedia
 
 - Todo pedido leva um `User-Agent` com o nome do projeto e um contato de verdade.

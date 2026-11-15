@@ -25,7 +25,7 @@ def main():
         except httpx.RequestError as erro:
             registro.error("sem rede no pedido de %s: %s", estado["sigla"], erro)
             registro.error("rode de novo: o programa continua de onde parou")
-            raise SystemExit(1)
+            raise  # o mesmo erro segue adiante: no Prefect, a task falha e pode ser tentada de novo
     registro.info("resumos de %s estados em dados/resumos", len(estados))
 
 
