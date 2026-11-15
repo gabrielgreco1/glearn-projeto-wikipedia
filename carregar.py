@@ -1,5 +1,5 @@
 """Carrega a silver e a gold no Postgres, numa transação só: a silver vai para a tabela estados, linha a linha pela
-sigla, e a gold substitui a tabela regioes inteira. Rodar de novo não duplica nada."""
+sigla, depois de passar pela auditoria, e a gold substitui a tabela regioes inteira. Rodar de novo não duplica nada."""
 
 import hashlib
 from pathlib import Path
@@ -28,6 +28,16 @@ ON CONFLICT (sigla) DO UPDATE
     WHERE e.hash_conteudo IS DISTINCT FROM EXCLUDED.hash_conteudo
 RETURNING (xmax = 0) AS inserido
 """
+# A auditoria: cada regra compara o que chega (chegando) com o que o banco já publica (estados) e devolve as siglas
+# que a quebram. Nenhuma sigla é o esperado. Na primeira carga não há com o que comparar, e nada é barrado.
+REGRAS = {
+    "a população mudou mais de 10%": """
+        SELECT c.sigla FROM chegando c JOIN estados e USING (sigla)
+        WHERE abs(c.populacao - e.populacao) > e.populacao / 10 ORDER BY c.sigla""",
+    "a área mudou mais de 1%": """
+        SELECT c.sigla FROM chegando c JOIN estados e USING (sigla)
+        WHERE abs(c.area_km2 - e.area_km2) > e.area_km2 / 100 ORDER BY c.sigla""",
+}
 COLUNAS_GOLD = ["regiao", "estados", "populacao", "estados_com_pib", "pib_bilhoes", "pib_por_pessoa"]
 
 
@@ -61,14 +71,28 @@ def com_hash(tabela):
     return tabela
 
 
+def auditar(conexao):
+    """A auditoria antes de publicar: cada regra roda sobre a tabela chegando. Se alguma devolve uma sigla, para com
+    erro, e o with da conexão desfaz a carga inteira: o banco continua com a carga anterior."""
+    quebradas = []
+    for regra, consulta in REGRAS.items():
+        siglas = [sigla for (sigla,) in conexao.execute(consulta).fetchall()]
+        if siglas:
+            quebradas.append(f"{regra}: {', '.join(siglas)}")
+    if quebradas:
+        raise ValueError(f"a auditoria barrou a carga: {'; '.join(quebradas)}")
+    registro.info("auditoria: %s regras, nenhuma quebrada", len(REGRAS))
+
+
 def carregar_estados(conexao, tabela):
-    """COPY para uma tabela temporária e, de lá, um upsert pela sigla. Devolve quantas linhas entraram, quantas
-    foram atualizadas e quantas ficaram iguais."""
+    """Gravar, auditar e publicar: COPY para uma tabela temporária, a auditoria sobre ela e, se passar, um upsert
+    pela sigla. Devolve quantas linhas entraram, quantas foram atualizadas e quantas ficaram iguais."""
     conexao.execute("CREATE TEMP TABLE chegando (LIKE estados INCLUDING DEFAULTS) ON COMMIT DROP")
     with conexao.cursor() as cursor:
         with cursor.copy(f"COPY chegando ({', '.join(COLUNAS)}) FROM STDIN") as copia:
             for linha in linhas(tabela, COLUNAS):
                 copia.write_row(linha)
+        auditar(conexao)
         tocadas = cursor.execute(UPSERT).fetchall()
     inseridos = sum(1 for (inserido,) in tocadas if inserido)
     return inseridos, len(tocadas) - inseridos, len(tabela) - len(tocadas)
