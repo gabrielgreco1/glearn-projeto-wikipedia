@@ -1,0 +1,16 @@
+services:
+  banco:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - banco:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "127.0.0.1"]
+      interval: 2s
+      retries: 15
+
+volumes:
+  banco:
