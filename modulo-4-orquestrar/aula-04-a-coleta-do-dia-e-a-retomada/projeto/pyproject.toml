@@ -1,0 +1,26 @@
+[project]
+name = "projeto-wikipedia"
+version = "0.1.0"
+description = "Monta um CSV com os 27 estados do Brasil, a partir da Wikipedia."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "duckdb>=2.0.0",
+    "httpx>=0.28.1",
+    "pandas>=3.1.1",
+    "pandera>=0.36.0",
+    "prefect>=3.9.3",
+    "psycopg[binary]>=3.3.9",
+    "pyarrow>=26.0.1",
+    "python-dotenv>=1.2.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["testes"]

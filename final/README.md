@@ -1,6 +1,6 @@
 # Projeto Wikipedia
 
-Um programa em Python que monta uma tabela com os 27 estados do Brasil, a partir da Wikipedia em português, e carrega o resultado num banco Postgres.
+Um programa em Python que monta uma tabela com os 27 estados do Brasil, a partir da Wikipedia em português, carrega o resultado num banco Postgres e roda sozinho todo dia, orquestrado pelo [Prefect](https://docs.prefect.io/).
 
 ## O que ele faz
 
@@ -10,7 +10,8 @@ Um programa em Python que monta uma tabela com os 27 estados do Brasil, a partir
 4. Pede à API da Wikipedia o resumo de cada estado e guarda em `dados/resumos/`.
 5. Junta a tabela e os resumos em `dados/estados_completo.csv` e confere o resultado.
 6. Transforma o texto das fichas em números limpos e validados (`transformar.py`).
-7. Carrega a tabela limpa e a resposta por região no Postgres (`carregar.py`).
+7. Carrega a tabela limpa e a resposta por região no Postgres (`carregar.py`), depois de uma auditoria.
+8. Roda tudo isso como um flow do Prefect, todo dia às 6h, com novas tentativas, aviso de falha e retomada (`fluxo.py`).
 
 ## Como rodar
 
@@ -25,11 +26,20 @@ Abra o `.env` e troque o contato pelo seu. Depois:
 ```
 docker compose up -d --wait
 uv sync
-uv run python rodar.py
 uv run pytest
 ```
 
-O `docker compose up` sobe o Postgres do projeto, na porta 5433 da sua máquina. O `rodar.py` faz tudo, na ordem: extrair, transformar e carregar. A primeira rodada faz 55 pedidos à Wikipedia e leva cerca de um minuto; a segunda não faz pedido nenhum e não muda nenhuma linha do banco. Os testes não precisam do banco.
+O `docker compose up` sobe o Postgres do projeto, na porta 5433 da sua máquina. Os testes não precisam do banco, do `.env` nem da pasta `dados/`: é assim que eles rodam no GitHub.
+
+O projeto roda de três jeitos. Os dois primeiros precisam do servidor do Prefect ligado, num terminal só dele: `uv run prefect server start`, com `uv run prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api` feito uma vez.
+
+| Comando | O que faz |
+|---|---|
+| `uv run python fluxo.py agendar` | fica ligado e roda o projeto todo dia às 6h, no horário de Brasília. Para rodar agora, noutro terminal: `uv run prefect deployment run projeto-wikipedia/todo-dia` |
+| `uv run python fluxo.py` | roda uma vez, agora, como um flow do Prefect |
+| `uv run python rodar.py` | roda as três etapas sem o Prefect, com o que já estiver em `dados/` |
+
+A primeira rodada de um dia faz 55 pedidos à Wikipedia e leva cerca de um minuto e meio. As seguintes, no mesmo dia, não fazem pedido nenhum e não mudam nenhuma linha do banco. O painel do Prefect fica em http://127.0.0.1:4200.
 
 Para desligar o banco, `docker compose down`. Os dados ficam no volume `banco` e voltam no próximo `up`; `docker compose down -v` apaga o volume também.
 
@@ -90,7 +100,29 @@ O `carregar.py` leva a silver e a gold para o Postgres, numa transação só:
 - Latitude e longitude estão vazias em 13 estados. Ficaram vazias: nada foi inventado.
 - O DF não tem municípios, e a regra aceita o vazio.
 
+## A orquestração
+
+O `fluxo.py` é o projeto como um flow do Prefect. O trabalho continua nos mesmos arquivos de cada etapa; o `fluxo.py` só diz a ordem, as novas tentativas, o horário e o aviso.
+
+| Task | O que chama | Se falhar |
+|---|---|---|
+| `preparar_coleta` | `coleta.py`: a coleta do dia em `dados/`; a de outro dia vai para `dados_anterior/` | |
+| `baixar_lista` | `baixar.py`, a página com a tabela | mais 3 tentativas, 10 s entre elas |
+| `tabela_em_csv` | `ler.py` | |
+| `paginas` | `paginas.py`, uma página por estado | mais 3 tentativas; o que já foi baixado não é pedido de novo |
+| `resumos` | `resumos.py`, a API de resumos | mais 3 tentativas, como a `paginas` |
+| `juntar_e_conferir` | `juntar.py` e `conferir.py` | |
+| `transformar` | `transformar.py` | |
+| `carregar` | `carregar.py`: grava, audita e só então publica | a auditoria barra, e nada é publicado |
+
+- **Retomada.** A coleta de hoje interrompida no meio (Ctrl+C, a máquina desligou, a rede caiu) continua de onde parou na próxima execução. Cada arquivo é gravado inteiro, de uma vez (`.parcial` e depois o nome certo).
+- **Auditoria antes de publicar.** A silver vai para uma tabela temporária; as regras de `REGRAS`, no `carregar.py`, comparam com o que o banco já publica (população que muda mais de 10%, área que muda mais de 1%). Se uma regra quebra, a carga inteira é desfeita.
+- **Impressão digital.** Cada carga grava em `cargas.impressao` o sha256 do que o banco publica. Mesmo resultado, mesma impressão, com ou sem queda no caminho.
+- **Aviso.** Uma execução que termina em `Failed` ou `Crashed` deixa uma linha em `avisos.log`. O `runbook.md` diz o que fazer com ela.
+- **Testes no GitHub.** `.github/workflows/testes.yml` roda os testes a cada push, numa máquina nova, sem o `.env` e sem o banco.
+
 ## O que este projeto ainda não tem
 
 - Histórico dos valores: o banco guarda o valor atual de cada estado e, na tabela `cargas`, o que cada carga mudou, mas não o valor de antes.
-- Agendamento: ele roda quando você manda.
+- Uma máquina sempre ligada: o agendamento só roda se o computador, o Docker, o servidor do Prefect e o `fluxo.py agendar` estiverem ligados às 6h. Uma execução perdida não é refeita sozinha; a do dia seguinte coleta tudo de novo.
+- Aviso que chega até você: o aviso fica em `avisos.log`, na sua máquina.

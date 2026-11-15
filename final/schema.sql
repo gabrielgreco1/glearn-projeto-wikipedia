@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS cargas (
     revisao_ate timestamptz NOT NULL,
     CHECK (tentados = inseridos + atualizados + iguais)
 );
+-- A impressão digital do banco depois de cada carga (carregar.py, impressao_digital).
+ALTER TABLE cargas ADD COLUMN IF NOT EXISTS impressao char(16);
 
 -- A gold: a resposta por região, trocada inteira a cada carga.
 CREATE TABLE IF NOT EXISTS regioes (

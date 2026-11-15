@@ -1,7 +1,10 @@
 # O contato de verdade fica só no seu computador.
 .env
-# As páginas baixadas: o programa baixa de novo quando precisar.
+# As coletas, a de hoje e a anterior: o programa baixa de novo quando precisar.
 dados/
+dados_anterior/
 # O ambiente que o uv cria e os restos do Python.
 .venv/
 __pycache__/
+# Os avisos de falha ficam só na sua máquina.
+avisos.log
