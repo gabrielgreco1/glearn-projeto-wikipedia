@@ -1,0 +1,5 @@
+# Configuração do Prefect para este projeto. O Prefect lê este arquivo da pasta onde o comando roda.
+
+[logging]
+# O registro "wikipedia" (baixar.py) aparece no terminal e no painel do Prefect, junto com o log das tasks.
+extra_loggers = "wikipedia"

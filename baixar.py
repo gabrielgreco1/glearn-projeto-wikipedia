@@ -21,6 +21,7 @@ PAUSA = 1.0  # segundos de espera depois de cada pedido
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S")
 logging.getLogger("httpx").setLevel(logging.WARNING)  # o httpx também registra cada pedido; aqui basta o nosso registro
 registro = logging.getLogger("wikipedia")
+registro.setLevel(logging.INFO)  # o nível fica no nosso registro: o Prefect troca o do logging inteiro para WARNING
 
 
 def baixar(url, destino):
