@@ -1,0 +1,17 @@
+# Roda os testes no GitHub a cada push e a cada pull request, numa máquina nova, sem o .env e sem o banco.
+name: Testes
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      - name: Instalar o ambiente igual ao do uv.lock
+        run: uv sync --locked
+      - name: Testes
+        run: uv run pytest
