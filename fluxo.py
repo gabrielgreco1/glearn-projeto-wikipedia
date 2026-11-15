@@ -1,11 +1,17 @@
 """O projeto Wikipedia como um flow do Prefect: uma task para cada etapa, na ordem, sobre a coleta do dia. As que
 pedem à Wikipedia são tentadas de novo quando falham: o que já está em disco não é pedido outra vez. Se a execução
-termina mal, fica um aviso em avisos.log."""
+termina mal, fica um aviso em avisos.log.
 
+Uso: uv run python fluxo.py            roda uma vez, agora
+     uv run python fluxo.py agendar    fica ligado e roda todo dia às 6h (Ctrl+C para parar)
+"""
+
+import sys
 from datetime import date, datetime
 from pathlib import Path
 
 from prefect import flow, task
+from prefect.schedules import Cron
 
 import carregar as carga
 import coleta
@@ -71,4 +77,8 @@ def projeto_wikipedia():
 
 
 if __name__ == "__main__":
-    projeto_wikipedia()
+    if sys.argv[1:] == ["agendar"]:
+        # Todo dia às 6h, no horário de Brasília. Sem o timezone, o Prefect lê o cron em UTC: seriam 3h da manhã.
+        projeto_wikipedia.serve(name="todo-dia", schedule=Cron("0 6 * * *", timezone="America/Sao_Paulo"))
+    else:
+        projeto_wikipedia()

@@ -18,4 +18,4 @@ O banco continua com a última carga que deu certo, inteira: a carga é uma tran
 4. **`Failed` em `carregar`, com `a auditoria barrou a carga`.** Um valor mudou mais do que a regra aceita, e a mensagem diz qual regra e quais estados. Nada foi publicado. Abra a página do estado e veja o valor: se a página está errada (uma edição que alguém ainda vai desfazer), espere e rode de novo mais tarde; se o valor mudou de verdade (um censo novo), mude a regra em `carregar.py`, com um commit que diga por quê.
 5. **`Crashed` com `interrupt signal`.** Alguém apertou Ctrl+C ou a máquina desligou no meio. Rode de novo.
 
-Para rodar de novo: `uv run python fluxo.py`.
+Para rodar de novo, com o agendamento ligado (`uv run python fluxo.py agendar`, num terminal que fica aberto): `uv run prefect deployment run projeto-wikipedia/todo-dia`. Sem ele: `uv run python fluxo.py`.
