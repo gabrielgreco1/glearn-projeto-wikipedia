@@ -1,6 +1,8 @@
 """O projeto Wikipedia como um flow do Prefect: uma task para cada etapa, na ordem. As que pedem à Wikipedia são
-tentadas de novo quando falham: o que já está em disco não é pedido outra vez."""
+tentadas de novo quando falham: o que já está em disco não é pedido outra vez. Se a execução termina mal, fica um
+aviso em avisos.log."""
 
+from datetime import datetime
 from pathlib import Path
 
 from prefect import flow, task
@@ -40,7 +42,15 @@ transformar = task(transformacao.main, name="transformar")
 carregar = task(carga.main, name="carregar")
 
 
-@flow(log_prints=True)
+def avisar(flow, flow_run, state):
+    """O Prefect chama esta função quando a execução termina em Failed ou Crashed. O aviso diz o que olhar primeiro."""
+    aviso = f"AVISO: {flow.name}, execução {flow_run.name}, terminou em {state.name}: {state.message}"
+    print(aviso)
+    with open("avisos.log", "a", encoding="utf-8") as arquivo:
+        arquivo.write(f"{datetime.now():%Y-%m-%d %H:%M:%S} {aviso} (o que fazer: runbook.md)\n")
+
+
+@flow(log_prints=True, on_failure=[avisar], on_crashed=[avisar])
 def projeto_wikipedia():
     baixar_lista()
     tabela_em_csv()

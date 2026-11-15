@@ -5,3 +5,5 @@ dados/
 # O ambiente que o uv cria e os restos do Python.
 .venv/
 __pycache__/
+# Os avisos de falha ficam só na sua máquina.
+avisos.log
