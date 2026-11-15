@@ -21,6 +21,14 @@
 - A pasta `dados/` não vai para o Git. O programa baixa e gera tudo de novo.
 - Rodar duas vezes não repete pedido nem estraga nada: o arquivo que já existe é reaproveitado.
 
+## Banco
+
+- O Postgres do projeto roda no Docker, descrito no `compose.yaml`, na porta 5433 da sua máquina. Suba com `docker compose up -d --wait`.
+- A senha e o endereço do banco ficam no `.env` (`POSTGRES_PASSWORD` e `DATABASE_URL`), como o contato. São de treino, e mesmo assim não vão para o Git.
+- As tabelas ficam em `schema.sql`. Uma tabela que muda ganha um `ALTER TABLE … IF NOT EXISTS` no fim do arquivo: rodar de novo nunca apaga nada.
+- Toda carga é uma transação: entra inteira, conferida contra a silver, ou não entra.
+- Rodar a carga duas vezes não muda o banco: upsert pela chave, com o hash só dos valores do estado.
+
 ## Educação com o site da Wikipedia
 
 - Todo pedido leva um `User-Agent` com o nome do projeto e um contato de verdade.

@@ -1,6 +1,6 @@
 # Projeto Wikipedia
 
-Um programa em Python que monta um arquivo CSV com os 27 estados do Brasil, a partir da Wikipedia em português.
+Um programa em Python que monta uma tabela com os 27 estados do Brasil, a partir da Wikipedia em português, e carrega o resultado num banco Postgres.
 
 ## O que ele faz
 
@@ -9,10 +9,12 @@ Um programa em Python que monta um arquivo CSV com os 27 estados do Brasil, a pa
 3. Baixa a página de cada estado em `dados/estados/`.
 4. Pede à API da Wikipedia o resumo de cada estado e guarda em `dados/resumos/`.
 5. Junta a tabela e os resumos em `dados/estados_completo.csv` e confere o resultado.
+6. Transforma o texto das fichas em números limpos e validados (`transformar.py`).
+7. Carrega a tabela limpa e a resposta por região no Postgres (`carregar.py`).
 
 ## Como rodar
 
-Você precisa do [uv](https://docs.astral.sh/uv/) instalado.
+Você precisa do [uv](https://docs.astral.sh/uv/) e do [Docker](https://docs.docker.com/get-started/get-docker/) instalados.
 
 ```
 cp .env.example .env
@@ -21,13 +23,15 @@ cp .env.example .env
 Abra o `.env` e troque o contato pelo seu. Depois:
 
 ```
+docker compose up -d --wait
 uv sync
 uv run python rodar.py
-uv run python transformar.py
 uv run pytest
 ```
 
-O `rodar.py` coleta: a primeira rodada faz 55 pedidos e leva cerca de um minuto, e a segunda não faz pedido nenhum. O `transformar.py` só lê o que já está em `dados/` e não faz pedido nenhum.
+O `docker compose up` sobe o Postgres do projeto, na porta 5433 da sua máquina. O `rodar.py` faz tudo, na ordem: extrair, transformar e carregar. A primeira rodada faz 55 pedidos à Wikipedia e leva cerca de um minuto; a segunda não faz pedido nenhum e não muda nenhuma linha do banco. Os testes não precisam do banco.
+
+Para desligar o banco, `docker compose down`. Os dados ficam no volume `banco` e voltam no próximo `up`; `docker compose down -v` apaga o volume também.
 
 ## De onde vem o dado
 
@@ -58,6 +62,20 @@ O `transformar.py` roda cinco etapas, na ordem:
 | Validar as regras e gravar as camadas | `validar.py`, `camadas.py` | `dados/bronze/inventario.csv`, `dados/silver/estados.parquet` |
 | Perguntas em SQL | `consultar.py` | `dados/gold/regioes.parquet` |
 
+## A carga
+
+O `carregar.py` leva a silver e a gold para o Postgres, numa transação só:
+
+| Tabela | De onde | Como |
+|---|---|---|
+| `estados` | `dados/silver/estados.parquet` | COPY para uma tabela temporária e upsert pela `sigla`: a linha nova entra, a que mudou é atualizada, a igual fica como está |
+| `regioes` | `dados/gold/regioes.parquet` | trocada inteira a cada carga |
+| `cargas` | o próprio `carregar.py` | uma linha por carga: quantas linhas vieram, novas, atualizadas, iguais e a soma da população |
+
+- O `hash_conteudo` de cada estado é o sha256 só dos valores do estado. A origem (`sha256_ficha`, `transformado_em`) muda a cada coleta mesmo com o dado igual, e por isso fica de fora do hash.
+- Antes de confirmar, a carga confere o banco contra a silver: o mesmo número de linhas e a mesma soma da população. Se não bate, nada é gravado.
+- As tabelas estão em `schema.sql`, que o `banco.py` roda antes de cada carga.
+
 ## Camadas
 
 - **Bronze**: o que veio do site, sem nenhuma mudança: `lista.html`, `estados/` e `resumos/`. O `inventario.csv` guarda o sha256 de cada arquivo.
@@ -74,5 +92,5 @@ O `transformar.py` roda cinco etapas, na ordem:
 
 ## O que este projeto ainda não tem
 
-- Histórico de coletas: cada rodada sobrescreve a tabela.
+- Histórico dos valores: o banco guarda o valor atual de cada estado e, na tabela `cargas`, o que cada carga mudou, mas não o valor de antes.
 - Agendamento: ele roda quando você manda.
